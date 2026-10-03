@@ -1,0 +1,24 @@
+site_name: My Documentation
+site_url: https://johndoe.github.io/my-docs/
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+
+nav:
+  - Home: index.md
+
+  # - Getting Started:
+  #     - Installation: installation.md
+
+  # - Architecture: architecture.md
+
+markdown_extensions:
+  - admonition
+  - tables
+  - fenced_code
+  - toc:
+      permalink: true
