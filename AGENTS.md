@@ -39,6 +39,7 @@ Every build prints a boxed "Warning from the Material for MkDocs team" about MkD
 mkdocs.yml                    Site config: theme, nav, Markdown extensions
 docs/                         Page sources (Markdown); docs/index.md is the home page
 requirements.txt              Pinned Python dependencies (pip freeze output)
+SUGGESTIONS.md                Improvement ideas not adopted yet (not part of the site)
 .github/workflows/deploy.yml  Builds the site and deploys it to GitHub Pages on push to main
 site/                         Build output (git-ignored, never edit)
 .venv/                        Local virtual environment (git-ignored)
@@ -57,10 +58,14 @@ Enabled in `mkdocs.yml`:
 
 - `admonition`: callout blocks such as `!!! note` and `!!! warning`
 - `tables`
-- `fenced_code`: fenced code blocks, at the top level of a page only. A fenced block inside a list item or an admonition does not render correctly with this extension.
 - `toc` with `permalink: true`: a link anchor on every heading
+- `pymdownx.highlight`: syntax highlighting in code blocks
+- `pymdownx.superfences`: fenced code blocks, including inside list items, admonitions and content tabs. It replaces Python-Markdown's `fenced_code`, so do not add `fenced_code` back.
+- `pymdownx.tabbed` with `alternate_style: true`: content tabs (`=== "Label"`, content indented by four spaces)
 
-`pymdown-extensions` is installed (Material depends on it), but none of its extensions are enabled. Syntax that needs them will not render, for example collapsible blocks (`???`), content tabs (`===`), task lists (`- [ ]`) and code blocks nested in lists (`pymdownx.superfences`). To use one, add it under `markdown_extensions` in `mkdocs.yml`. The package is already installed, so this does not need an install.
+Theme features: `content.code.copy` adds a copy button to every code block. `content.tabs.link` switches every tab with the same label across the site when the reader picks one, so tabs only stay in sync if their labels match exactly. Operating-system tabs use the labels `Windows`, `macOS` and `Linux`.
+
+Other `pymdown-extensions` syntax is not enabled and will not render, for example collapsible blocks (`???`, `pymdownx.details`), task lists (`- [ ]`, `pymdownx.tasklist`) and keyboard keys (`++ctrl+c++`, `pymdownx.keys`). To use one, add it under `markdown_extensions` in `mkdocs.yml`. The package is already installed, so this does not need an install.
 
 ## Dependencies
 

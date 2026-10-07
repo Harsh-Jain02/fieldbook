@@ -7,9 +7,12 @@ theme:
     - navigation.sections
     - navigation.top
     - search.suggest
+    - content.code.copy
+    - content.tabs.link
 
 nav:
   - Home: index.md
+  - How to make an MkDocs website: how-to-make-mkdocs-website.md
 
   # - Getting Started:
   #     - Installation: installation.md
@@ -19,6 +22,9 @@ nav:
 markdown_extensions:
   - admonition
   - tables
-  - fenced_code
   - toc:
       permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
