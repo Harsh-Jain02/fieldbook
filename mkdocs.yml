@@ -15,6 +15,8 @@ nav:
   - MkDocs:
       - Quick steps: mkdocs/quick-steps.md
       - Full guide: mkdocs/full-guide.md
+  - Coding agents:
+      - Codex Slack notifications: coding-agents/codex-slack-notifications.md
 
   # - Getting Started:
   #     - Installation: installation.md
