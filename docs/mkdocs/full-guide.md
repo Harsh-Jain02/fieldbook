@@ -2,6 +2,9 @@
 
 *Last updated: 7 October 2026*
 
+!!! tip "In a hurry?"
+    The [quick steps](quick-steps.md) list only what to do, without the explanations.
+
 This guide builds a documentation website from plain Markdown files using [MkDocs](https://www.mkdocs.org/) and the [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) theme, then publishes it for free on GitHub Pages. Once it is set up, publishing a change is a single `git push`: a GitHub Actions workflow rebuilds and redeploys the site for you.
 
 Where commands differ between operating systems, they are shown in tabs. Pick your system once and every other tab on the site switches with it.
@@ -207,10 +210,17 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
+  - pymdownx.details
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+
+validation:
+  nav:
+    omitted_files: warn
+  links:
+    anchors: warn
 ```
 
 What each setting does:
@@ -229,11 +239,13 @@ What each setting does:
 | `admonition` | Callout boxes such as `!!! note` and `!!! warning`. |
 | `tables` | Markdown tables, like this one. |
 | `toc` with `permalink: true` | A table of contents for each page, and a link anchor (¶) next to every heading. |
+| `pymdownx.details` | Collapsible blocks: `??? note "Title"` starts collapsed, `???+ note "Title"` starts open. |
 | `pymdownx.highlight` | Syntax highlighting in code blocks. |
 | `pymdownx.superfences` | Code blocks inside lists, callout boxes and tabs. |
 | `pymdownx.tabbed` | Content tabs. `alternate_style: true` is the style Material for MkDocs requires. |
+| `validation` | Turns two problems that MkDocs normally reports only as `INFO` into warnings: a page in `docs/` that is missing from `nav` (`omitted_files`), and a link to a heading that does not exist (`anchors`). |
 
-Every file listed in `nav` must exist in `docs/`. A missing one causes a warning in the preview and fails the strict build in step 7.
+Every file listed in `nav` must exist in `docs/`, and with the `validation` settings above, every page in `docs/` must be listed in `nav`. Breaking either rule causes a warning in the preview and fails the strict build in step 7.
 
 !!! tip "Writing tabs in a page"
     Start each tab with `=== "Label"` and indent its content by four spaces:
@@ -270,7 +282,7 @@ Before publishing, run a strict build:
 mkdocs build --strict
 ```
 
-It builds the site into the `site/` folder and stops with an error if a link between pages is broken or a `nav` entry points to a missing file. It does not fail on a page that is missing from `nav`. That only shows up as an `INFO` line starting with "The following pages exist in the docs directory, but are not included in the "nav" configuration", so look for that line in the output.
+It builds the site into the `site/` folder and stops with an error if a link to another page is broken or a `nav` entry points to a missing file. Thanks to the `validation` settings from step 6, it also stops if a page is missing from `nav` or a link points to a heading that does not exist. Without those settings, MkDocs reports the last two only as `INFO` lines, which are easy to miss.
 
 ## Part 2: Publish the site on GitHub Pages
 
@@ -430,7 +442,7 @@ The same link appears under **Settings** → **Pages** and in the summary of the
 2. Create or edit a `.md` file in `docs/`.
 3. If it is a new page, add it to `nav` in `mkdocs.yml`.
 4. Preview with `mkdocs serve`.
-5. Check with `mkdocs build --strict`, and look for the `INFO` line about pages not included in `nav`.
+5. Check with `mkdocs build --strict` and fix everything it reports.
 6. Commit and push. The workflow republishes the site.
 
 ### Install or upgrade a package
@@ -501,7 +513,11 @@ The environment is not active. Activate it, or run MkDocs through Python, for ex
 
 ### The strict build fails
 
-The message names the page and the link or `nav` entry that is wrong. Fix the path or create the missing page. Links between pages must be relative paths to `.md` files.
+The message names the page and the link or `nav` entry that is wrong:
+
+- **A link or `nav` entry points to a missing file:** fix the path or create the page. Links between pages must be relative paths to `.md` files.
+- **A page is not included in `nav`:** add it to `nav` in `mkdocs.yml`.
+- **An anchor is not found:** the heading was renamed, or the `#...` part of the link is misspelled. Copy the correct link from the ¶ symbol next to the heading.
 
 ### Tabs or code blocks show up as plain text
 

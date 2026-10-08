@@ -1,4 +1,4 @@
-site_name: My Documentation
+site_name: Fieldbook
 site_url: https://harsh-jain02.github.io/fieldbook/
 
 theme:
@@ -12,7 +12,9 @@ theme:
 
 nav:
   - Home: index.md
-  - How to make an MkDocs website: how-to-make-mkdocs-website.md
+  - MkDocs:
+      - Quick steps: mkdocs/quick-steps.md
+      - Full guide: mkdocs/full-guide.md
 
   # - Getting Started:
   #     - Installation: installation.md
@@ -24,7 +26,14 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
+  - pymdownx.details
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+
+validation:
+  nav:
+    omitted_files: warn
+  links:
+    anchors: warn

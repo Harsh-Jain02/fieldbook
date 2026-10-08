@@ -25,19 +25,27 @@ Writing conventions (page structure, file naming, tone) are not decided yet. Unt
 | Task | Command |
 |---|---|
 | Build and check (required before finishing) | `.venv/Scripts/python.exe -m mkdocs build --strict` |
-| Local preview at http://127.0.0.1:8000 (keeps running until stopped) | `.venv/Scripts/python.exe -m mkdocs serve` |
+| Local preview at http://127.0.0.1:8000/fieldbook/ (keeps running until stopped) | `.venv/Scripts/python.exe -m mkdocs serve` |
 
 The build writes to `site/`, which is git-ignored.
 
 Every build prints a boxed "Warning from the Material for MkDocs team" about MkDocs 2.0. It is an announcement, not a build warning: it does not fail `--strict` and needs no action.
 
-`--strict` fails the build on broken links between pages and on `nav` entries that point to missing files. It does **not** fail on a page that exists in `docs/` but is missing from `nav`; MkDocs reports that only as an `INFO` line ("The following pages exist in the docs directory, but are not included in the "nav" configuration"). Check the build output for that line.
+`--strict` fails the build on:
+
+- broken links between pages
+- `nav` entries that point to missing files
+- pages in `docs/` that are missing from `nav`
+- links to a heading (`page.md#anchor`) that does not exist
+
+MkDocs reports the last two only as `INFO` by default. The `validation` section of `mkdocs.yml` raises them to warnings so the strict build catches them. Do not remove it.
 
 ## Repository layout
 
 ```text
 mkdocs.yml                    Site config: theme, nav, Markdown extensions
-docs/                         Page sources (Markdown); docs/index.md is the home page
+docs/                         Page sources (Markdown), one folder per topic; docs/index.md is the home page
+docs/mkdocs/                  Topic: building and publishing this kind of site
 requirements.txt              Pinned Python dependencies (pip freeze output)
 SUGGESTIONS.md                Improvement ideas not adopted yet (not part of the site)
 .github/workflows/deploy.yml  Builds the site and deploys it to GitHub Pages on push to main
@@ -47,8 +55,9 @@ site/                         Build output (git-ignored, never edit)
 
 ## Pages and navigation
 
-- Pages are Markdown files under `docs/`.
+- Pages are Markdown files under `docs/`, grouped by topic. Each topic is a folder under `docs/` (for example `docs/mkdocs/`) and a section of the same name in `nav`.
 - `nav` in `mkdocs.yml` is an explicit list, so a new page does not appear in the site navigation until it is added there.
+- A topic can have a short `quick-steps.md` (only what to do) next to a long `full-guide.md` (what to do and why). The quick page repeats commands and config files from the full guide and links to its step headings, so when you change one page, update the other to match.
 - You may edit `mkdocs.yml`, including `nav`, theme features and Markdown extensions.
 - Link between pages with relative paths to the `.md` file, for example `[Setup](../tools/setup.md)`. MkDocs only checks links written this way.
 
@@ -59,13 +68,14 @@ Enabled in `mkdocs.yml`:
 - `admonition`: callout blocks such as `!!! note` and `!!! warning`
 - `tables`
 - `toc` with `permalink: true`: a link anchor on every heading
+- `pymdownx.details`: collapsible blocks (`??? note "Title"` starts collapsed, `???+` starts open)
 - `pymdownx.highlight`: syntax highlighting in code blocks
 - `pymdownx.superfences`: fenced code blocks, including inside list items, admonitions and content tabs. It replaces Python-Markdown's `fenced_code`, so do not add `fenced_code` back.
 - `pymdownx.tabbed` with `alternate_style: true`: content tabs (`=== "Label"`, content indented by four spaces)
 
 Theme features: `content.code.copy` adds a copy button to every code block. `content.tabs.link` switches every tab with the same label across the site when the reader picks one, so tabs only stay in sync if their labels match exactly. Operating-system tabs use the labels `Windows`, `macOS` and `Linux`.
 
-Other `pymdown-extensions` syntax is not enabled and will not render, for example collapsible blocks (`???`, `pymdownx.details`), task lists (`- [ ]`, `pymdownx.tasklist`) and keyboard keys (`++ctrl+c++`, `pymdownx.keys`). To use one, add it under `markdown_extensions` in `mkdocs.yml`. The package is already installed, so this does not need an install.
+Other `pymdown-extensions` syntax is not enabled and will not render, for example task lists (`- [ ]`, `pymdownx.tasklist`) and keyboard keys (`++ctrl+c++`, `pymdownx.keys`). To use one, add it under `markdown_extensions` in `mkdocs.yml`. The package is already installed, so this does not need an install.
 
 ## Dependencies
 
