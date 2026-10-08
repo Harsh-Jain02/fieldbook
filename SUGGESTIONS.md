@@ -54,3 +54,140 @@ Ideas for improving the site that have not been adopted yet. This file is outsid
 5. Remove the hand-typed `*Last updated: ...*` lines from the pages in `docs/`.
 
 6. Run `.venv/Scripts/python.exe -m mkdocs build --strict`. A page that has not been committed yet has no Git history, so check how the plugin reports it. If that fails the strict build, see the plugin's `fallback_to_build_date` and `strict` options.
+
+## Material-style visual refresh
+
+**Status:** suggested on 8 October 2026, not adopted.
+
+**Today:** the site already uses Material for MkDocs and has useful basics such as navigation sections, search suggestions, copy buttons and linked content tabs. Its visual identity is still mostly the theme default, however, and the home page is the starter MkDocs page.
+
+**Goal:** give Fieldbook the same kind of polished, easy-to-navigate feel as the [Material for MkDocs website](https://squidfunk.github.io/mkdocs-material/) without copying its branding or artwork. The reference site combines ordinary [theme configuration](https://github.com/squidfunk/mkdocs-material/blob/master/mkdocs.yml) with a [custom home-page template](https://github.com/squidfunk/mkdocs-material/blob/master/material/overrides/home.html), so configuration alone will not reproduce its landing page.
+
+**Recommended direction:** use a restrained "personal field notebook" identity: indigo or deep-purple accents, a book-style icon, light and dark modes, strong search, and a home page that leads directly to topic areas. Keep documentation pages conventional and readable; reserve the more visual layout for the home page.
+
+### Phase 1: polish the standard theme
+
+This phase has the best benefit-to-effort ratio and needs no new package. Extend the existing `theme` configuration rather than replacing its current features:
+
+```yaml
+site_description: A personal fieldbook of useful things learned and solved
+repo_name: harsh-jain02/fieldbook
+repo_url: https://github.com/harsh-jain02/fieldbook
+
+theme:
+  name: material
+  icon:
+    logo: material/book-open-page-variant
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.tracking
+    - navigation.footer
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - search.share
+    - toc.follow
+    - content.code.copy
+    - content.tabs.link
+```
+
+The [palette toggle](https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#color-palette-toggle) gives readers explicit light and dark modes. [Navigation tabs, URL tracking and table-of-contents following](https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/) make a larger knowledge base easier to explore. [Search highlighting and sharing](https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-search/) improve the site's most important retrieval tool.
+
+Also add a favicon when a final mark has been chosen:
+
+```yaml
+theme:
+  favicon: assets/images/favicon.png
+```
+
+The repository link should be omitted if the source repository is not meant to be advertised in the header.
+
+### Phase 2: replace the starter home page
+
+Rewrite `docs/index.md` as a useful entry point rather than a list of MkDocs commands. A practical first version can remain ordinary Markdown and contain:
+
+- a short Fieldbook title and one-sentence purpose;
+- a prominent link to browse the first topic and a prompt to use search;
+- a small "Topics" section with one card or short description per top-level navigation section;
+- a "Recently useful" or "Start here" section with a few hand-picked pages.
+
+This is likely enough while the site has only one topic. It avoids maintaining custom HTML before there is enough content to justify it.
+
+### Phase 3: add an optional custom landing page
+
+When there are several topics, create a distinctive hero layout similar in spirit to the reference site:
+
+```text
+overrides/
+└── home.html
+docs/
+├── assets/
+│   └── images/
+│       └── fieldbook-hero.svg
+└── stylesheets/
+    └── extra.css
+```
+
+Register the files in `mkdocs.yml`:
+
+```yaml
+theme:
+  name: material
+  custom_dir: overrides
+
+extra_css:
+  - stylesheets/extra.css
+```
+
+Then select the template in `docs/index.md`:
+
+```yaml
+---
+template: home.html
+hide:
+  - navigation
+  - toc
+---
+```
+
+The template should extend Material's `main.html`, use its `tabs` or `content` block for a responsive hero, and retain Material's own buttons, grid width, typography and colour variables. The [theme customization guide](https://squidfunk.github.io/mkdocs-material/customization/#overriding-blocks) recommends extending blocks so upstream theme updates remain easier to adopt.
+
+A Fieldbook hero could contain:
+
+- the heading "Useful things, kept findable";
+- one sentence explaining that this is a personal reference for learned solutions;
+- primary and secondary buttons for "Browse topics" and "MkDocs guide";
+- an original notebook, map or index-card illustration;
+- a compact grid of topic cards below the hero.
+
+Do not copy the Material site's illustration or its complete home-page CSS. Original artwork and a small Fieldbook-specific stylesheet will avoid branding/licensing ambiguity and be much easier to maintain.
+
+### Decisions needed before adoption
+
+- Confirm the visual tone: notebook/library, minimal technical docs, or a more colourful landing page.
+- Choose the primary/accent colours and whether to create a custom logo or use a bundled Material icon.
+- Decide whether the GitHub repository link should appear in the header.
+- Choose whether to stop after the Markdown home page or invest in the custom hero and illustration.
+
+### Checks when adopting
+
+1. Preview at desktop and mobile widths in both light and dark modes.
+2. Check keyboard focus, colour contrast, descriptive image alternative text and reduced-motion behavior.
+3. Confirm that navigation tabs remain useful as the number of topics grows; with only one topic, they may feel sparse.
+4. Run `.venv/Scripts/python.exe -m mkdocs build --strict` and fix every warning.
