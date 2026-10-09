@@ -47,6 +47,7 @@ mkdocs.yml                    Site config: theme, nav, Markdown extensions
 docs/                         Page sources (Markdown), one folder per topic; docs/index.md is the home page
 docs/mkdocs/                  Topic: building and publishing this kind of site
 docs/coding-agents/           Topic: setups and tricks for AI coding agents
+docs/supabase/                Topic: Supabase projects and their databases
 docs/stylesheets/extra.css    Custom CSS: makes whole cards clickable
 requirements.txt              Pinned Python dependencies (pip freeze output)
 SUGGESTIONS.md                Improvement ideas not adopted yet (not part of the site)

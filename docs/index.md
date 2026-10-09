@@ -22,4 +22,10 @@ Things I've learned and tricks I found useful, kept so I can find them again.
 
     Setups and tricks for AI coding agents such as Codex.
 
+-   :simple-supabase:{ .lg .middle } **[Supabase](supabase/index.md)**
+
+    ---
+
+    Tasks and fixes for Supabase projects and their databases.
+
 </div>

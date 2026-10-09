@@ -20,6 +20,9 @@ nav:
   - Coding agents:
       - coding-agents/index.md
       - Codex Slack notifications: coding-agents/codex-slack-notifications.md
+  - Supabase:
+      - supabase/index.md
+      - Move a project to another region: supabase/move-project-to-another-region.md
 
   # - Getting Started:
   #     - Installation: installation.md
