@@ -57,7 +57,7 @@ Ideas for improving the site that have not been adopted yet. This file is outsid
 
 ## Material-style visual refresh
 
-**Status:** suggested on 8 October 2026, not adopted.
+**Status:** suggested on 8 October 2026. Phase 2 adopted on 9 October 2026; phases 1 and 3 not adopted.
 
 **Today:** the site already uses Material for MkDocs and has useful basics such as navigation sections, search suggestions, copy buttons and linked content tabs. Its visual identity is still mostly the theme default, however, and the home page is the starter MkDocs page.
 
@@ -95,6 +95,7 @@ theme:
         name: Switch to light mode
   features:
     - navigation.tabs
+    - navigation.indexes
     - navigation.sections
     - navigation.tracking
     - navigation.footer
@@ -129,6 +130,15 @@ Rewrite `docs/index.md` as a useful entry point rather than a list of MkDocs com
 
 This is likely enough while the site has only one topic. It avoids maintaining custom HTML before there is enough content to justify it.
 
+**Adopted on 9 October 2026** in this form:
+
+- The home page has a title, a one-sentence purpose and one card per topic, with an icon on each card. It hides the navigation and table-of-contents sidebars.
+- Each topic has an `index.md` topic page with one card per page. The `navigation.indexes` feature opens it when the section name is clicked in the sidebar.
+- `docs/stylesheets/extra.css` makes the whole card clickable.
+- New Markdown extensions: `attr_list`, `md_in_html` and `pymdownx.emoji`.
+
+The "Start here" section and the prompt to use search were not added. AGENTS.md explains how to keep the cards up to date.
+
 ### Phase 3: add an optional custom landing page
 
 When there are several topics, create a distinctive hero layout similar in spirit to the reference site:
@@ -141,21 +151,18 @@ docs/
 │   └── images/
 │       └── fieldbook-hero.svg
 └── stylesheets/
-    └── extra.css
+    └── extra.css        (already exists; add the hero styles here)
 ```
 
-Register the files in `mkdocs.yml`:
+`docs/stylesheets/extra.css` and its `extra_css` entry in `mkdocs.yml` were added with phase 2, so only the template folder needs registering:
 
 ```yaml
 theme:
   name: material
   custom_dir: overrides
-
-extra_css:
-  - stylesheets/extra.css
 ```
 
-Then select the template in `docs/index.md`:
+Then select the template in `docs/index.md`, which already has the `hide` list:
 
 ```yaml
 ---

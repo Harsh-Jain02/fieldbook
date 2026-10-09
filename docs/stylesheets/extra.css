@@ -1,0 +1,10 @@
+/* Make the whole card clickable: stretch the card's link over the card */
+.md-typeset .grid.cards > ul > li {
+  position: relative;
+}
+
+.md-typeset .grid.cards > ul > li a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}

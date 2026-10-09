@@ -1,17 +1,25 @@
-# Welcome to MkDocs
+---
+hide:
+  - navigation
+  - toc
+---
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+# Fieldbook
 
-## Commands
+Things I've learned and tricks I found useful, kept so I can find them again.
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+<div class="grid cards" markdown>
 
-## Project layout
+-   :material-language-markdown:{ .lg .middle } **[MkDocs](mkdocs/index.md)**
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+    ---
+
+    Build and publish a website like this one.
+
+-   :material-robot-outline:{ .lg .middle } **[Coding agents](coding-agents/index.md)**
+
+    ---
+
+    Setups and tricks for AI coding agents such as Codex.
+
+</div>

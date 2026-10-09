@@ -46,6 +46,8 @@ MkDocs reports the last two only as `INFO` by default. The `validation` section 
 mkdocs.yml                    Site config: theme, nav, Markdown extensions
 docs/                         Page sources (Markdown), one folder per topic; docs/index.md is the home page
 docs/mkdocs/                  Topic: building and publishing this kind of site
+docs/coding-agents/           Topic: setups and tricks for AI coding agents
+docs/stylesheets/extra.css    Custom CSS: makes whole cards clickable
 requirements.txt              Pinned Python dependencies (pip freeze output)
 SUGGESTIONS.md                Improvement ideas not adopted yet (not part of the site)
 .github/workflows/deploy.yml  Builds the site and deploys it to GitHub Pages on push to main
@@ -57,23 +59,52 @@ site/                         Build output (git-ignored, never edit)
 
 - Pages are Markdown files under `docs/`, grouped by topic. Each topic is a folder under `docs/` (for example `docs/mkdocs/`) and a section of the same name in `nav`.
 - `nav` in `mkdocs.yml` is an explicit list, so a new page does not appear in the site navigation until it is added there.
+- Each topic folder has an `index.md` topic page, listed first and without a label in its `nav` section. The `navigation.indexes` theme feature attaches it to the section, so clicking the section name in the sidebar opens it.
 - A topic can have a short `quick-steps.md` (only what to do) next to a long `full-guide.md` (what to do and why). The quick page repeats commands and config files from the full guide and links to its step headings, so when you change one page, update the other to match.
 - You may edit `mkdocs.yml`, including `nav`, theme features and Markdown extensions.
 - Link between pages with relative paths to the `.md` file, for example `[Setup](../tools/setup.md)`. MkDocs only checks links written this way.
+
+### Cards on the home page and topic pages
+
+The home page (`docs/index.md`) shows one card per topic, and each topic page shows one card per page in that topic, in the same order as `nav`. Material cannot fill these in automatically, so keep them up to date by hand:
+
+- **New page:** add it to `nav` and add a card for it to its topic page.
+- **New topic:** create the folder with an `index.md` topic page, add a `nav` section with the topic page listed first, and add a card for it to the home page.
+
+A card uses Material's card grid. Its title is a bold link whose text is the `nav` label, followed by a rule and a one-line description:
+
+```markdown
+<div class="grid cards" markdown>
+
+-   **[Codex Slack notifications](codex-slack-notifications.md)**
+
+    ---
+
+    Get a Slack message when Codex needs approval or finishes.
+
+</div>
+```
+
+Home page cards also start with an icon, for example `:material-robot-outline:{ .lg .middle } **[Coding agents](coding-agents/index.md)**`. An icon name works if its SVG file exists in the installed theme, for example `:material-robot-outline:` is `.venv/Lib/site-packages/material/templates/.icons/material/robot-outline.svg`.
+
+`docs/stylesheets/extra.css` stretches the card's link over the whole card, so clicking anywhere on the card opens the page. Keep exactly one link per card: with more, clicks would go to the wrong one.
 
 ### Markdown features
 
 Enabled in `mkdocs.yml`:
 
 - `admonition`: callout blocks such as `!!! note` and `!!! warning`
+- `attr_list`: attributes in curly braces, such as `{ .lg .middle }` on card icons
+- `md_in_html`: Markdown inside HTML blocks that have the `markdown` attribute, used by card grids (`<div class="grid cards" markdown>`)
 - `tables`
 - `toc` with `permalink: true`: a link anchor on every heading
 - `pymdownx.details`: collapsible blocks (`??? note "Title"` starts collapsed, `???+` starts open)
+- `pymdownx.emoji` with Material's icon set: icons such as `:material-robot-outline:`. VS Code's YAML extension reports "Unresolved tag" on its two `!!python/name:` lines in `mkdocs.yml`. MkDocs reads them correctly, so leave them as they are.
 - `pymdownx.highlight`: syntax highlighting in code blocks
 - `pymdownx.superfences`: fenced code blocks, including inside list items, admonitions and content tabs. It replaces Python-Markdown's `fenced_code`, so do not add `fenced_code` back.
 - `pymdownx.tabbed` with `alternate_style: true`: content tabs (`=== "Label"`, content indented by four spaces)
 
-Theme features: `content.code.copy` adds a copy button to every code block. `content.tabs.link` switches every tab with the same label across the site when the reader picks one, so tabs only stay in sync if their labels match exactly. Operating-system tabs use the labels `Windows`, `macOS` and `Linux`.
+Theme features: `navigation.indexes` attaches each topic's `index.md` to its `nav` section. `content.code.copy` adds a copy button to every code block. `content.tabs.link` switches every tab with the same label across the site when the reader picks one, so tabs only stay in sync if their labels match exactly. Operating-system tabs use the labels `Windows`, `macOS` and `Linux`.
 
 Other `pymdown-extensions` syntax is not enabled and will not render, for example task lists (`- [ ]`, `pymdownx.tasklist`) and keyboard keys (`++ctrl+c++`, `pymdownx.keys`). To use one, add it under `markdown_extensions` in `mkdocs.yml`. The package is already installed, so this does not need an install.
 

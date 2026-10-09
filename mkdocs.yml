@@ -4,6 +4,7 @@ site_url: https://harsh-jain02.github.io/fieldbook/
 theme:
   name: material
   features:
+    - navigation.indexes
     - navigation.sections
     - navigation.top
     - search.suggest
@@ -13,9 +14,11 @@ theme:
 nav:
   - Home: index.md
   - MkDocs:
+      - mkdocs/index.md
       - Quick steps: mkdocs/quick-steps.md
       - Full guide: mkdocs/full-guide.md
   - Coding agents:
+      - coding-agents/index.md
       - Codex Slack notifications: coding-agents/codex-slack-notifications.md
 
   # - Getting Started:
@@ -23,12 +26,20 @@ nav:
 
   # - Architecture: architecture.md
 
+extra_css:
+  - stylesheets/extra.css
+
 markdown_extensions:
   - admonition
+  - attr_list
+  - md_in_html
   - tables
   - toc:
       permalink: true
   - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.tabbed:
