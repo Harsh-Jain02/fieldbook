@@ -137,7 +137,7 @@ This is likely enough while the site has only one topic. It avoids maintaining c
 - `docs/stylesheets/extra.css` makes the whole card clickable.
 - New Markdown extensions: `attr_list`, `md_in_html` and `pymdownx.emoji`.
 
-The "Start here" section and the prompt to use search were not added. AGENTS.md explains how to keep the cards up to date.
+The "Start here" section and the prompt to use search were not added. WRITING-GUIDE.md explains how to keep the cards up to date.
 
 ### Phase 3: add an optional custom landing page
 
