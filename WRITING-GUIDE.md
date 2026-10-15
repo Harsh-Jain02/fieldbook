@@ -90,7 +90,7 @@ Enabled in `mkdocs.yml`:
 - `pymdownx.superfences`: fenced code blocks, including inside list items, admonitions and content tabs. It replaces Python-Markdown's `fenced_code`, so do not add `fenced_code` back.
 - `pymdownx.tabbed` with `alternate_style: true`: content tabs (`=== "Label"`, content indented by four spaces)
 
-Theme features: `navigation.indexes` attaches each topic's `index.md` to its `nav` section. `content.code.copy` adds a copy button to every code block. `content.tabs.link` switches every tab with the same label across the site when the reader picks one, so tabs only stay in sync if their labels match exactly. Operating-system tabs use the labels `Windows`, `macOS` and `Linux`.
+Theme features: `navigation.indexes` attaches each topic's `index.md` to its `nav` section. Inactive topics remain collapsible in the sidebar so their pages do not distract from the current topic; do not enable `navigation.sections`, which would render every top-level topic as a group. `content.code.copy` adds a copy button to every code block. `content.tabs.link` switches every tab with the same label across the site when the reader picks one, so tabs only stay in sync if their labels match exactly. Operating-system tabs use the labels `Windows`, `macOS` and `Linux`.
 
 Other `pymdown-extensions` syntax is not enabled and will not render, for example task lists (`- [ ]`, `pymdownx.tasklist`) and keyboard keys (`++ctrl+c++`, `pymdownx.keys`). To use one, add it under `markdown_extensions` in `mkdocs.yml` and to the list above. The package is already installed, so this does not need an install.
 
