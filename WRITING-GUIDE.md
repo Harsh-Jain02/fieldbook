@@ -71,7 +71,7 @@ A card's title is a bold link whose text is the `nav` label, followed by a rule 
 </div>
 ```
 
-Home page cards also start with an icon, for example `:material-robot-outline:{ .lg .middle } **[Coding agents](coding-agents/index.md)**`. An icon name works if its SVG file exists in the installed theme, for example `:material-robot-outline:` is `.venv/Lib/site-packages/material/templates/.icons/material/robot-outline.svg`.
+Home page cards also start with an icon, for example `:material-robot-outline:{ .lg .middle } **[Coding agents](coding-agents/index.md)**`. An icon name works if its SVG file exists in the installed theme; for example, `:material-robot-outline:` comes from `.icons/material/robot-outline.svg` in Material's installed icon set.
 
 `docs/stylesheets/extra.css` stretches the card's link over the whole card, so clicking anywhere on the card opens the page. Keep exactly one link per card: with more, clicks would go to the wrong one.
 
@@ -96,7 +96,7 @@ Other `pymdown-extensions` syntax is not enabled and will not render, for exampl
 
 ## Checks before finishing
 
-1. Run `.venv/Scripts/python.exe -m mkdocs build --strict` and fix every warning it reports.
+1. Run `.venv/Scripts/python.exe -m mkdocs build --strict` on Windows or `.venv/bin/python -m mkdocs build --strict` on Ubuntu, and fix every warning it reports.
 2. Check that every new page has a card on its topic page, and every new topic has a card on the home page. The strict build does not check cards.
 3. Check the `*Last updated*` date on every page whose content changed.
 4. Check that no secrets or private information went into the pages.

@@ -21,17 +21,33 @@ Ideas for improving the site that have not been adopted yet. This file is outsid
 
 1. Install the plugin:
 
+   Windows:
+
    ```bash
    .venv/Scripts/python.exe -m pip install mkdocs-git-revision-date-localized-plugin
    ```
 
-2. Save the new package list. In Git Bash or Command Prompt:
+   Ubuntu:
+
+   ```bash
+   .venv/bin/python -m pip install mkdocs-git-revision-date-localized-plugin
+   ```
+
+2. Save the new package list:
+
+   Windows (Git Bash or Command Prompt):
 
    ```bash
    .venv/Scripts/python.exe -m pip freeze > requirements.txt
    ```
 
-   In Windows PowerShell 5.1, use `| Out-File -Encoding utf8 requirements.txt` instead of `> requirements.txt`, so the file is not saved as UTF-16.
+   In Windows PowerShell 5.1, use `.venv/Scripts/python.exe -m pip freeze | Out-File -Encoding utf8 requirements.txt` instead, so the file is not saved as UTF-16.
+
+   Ubuntu:
+
+   ```bash
+   .venv/bin/python -m pip freeze > requirements.txt
+   ```
 
 3. Add the plugin to `mkdocs.yml`. `search` must be listed too, because a `plugins` list replaces the MkDocs default, which only contains `search`:
 
@@ -53,7 +69,7 @@ Ideas for improving the site that have not been adopted yet. This file is outsid
 
 5. Remove the hand-typed `*Last updated: ...*` lines from the pages in `docs/`.
 
-6. Run `.venv/Scripts/python.exe -m mkdocs build --strict`. A page that has not been committed yet has no Git history, so check how the plugin reports it. If that fails the strict build, see the plugin's `fallback_to_build_date` and `strict` options.
+6. Run `.venv/Scripts/python.exe -m mkdocs build --strict` on Windows or `.venv/bin/python -m mkdocs build --strict` on Ubuntu. A page that has not been committed yet has no Git history, so check how the plugin reports it. If that fails the strict build, see the plugin's `fallback_to_build_date` and `strict` options.
 
 ## Material-style visual refresh
 
@@ -197,4 +213,4 @@ Do not copy the Material site's illustration or its complete home-page CSS. Orig
 1. Preview at desktop and mobile widths in both light and dark modes.
 2. Check keyboard focus, colour contrast, descriptive image alternative text and reduced-motion behavior.
 3. Confirm that navigation tabs remain useful as the number of topics grows; with only one topic, they may feel sparse.
-4. Run `.venv/Scripts/python.exe -m mkdocs build --strict` and fix every warning.
+4. Run `.venv/Scripts/python.exe -m mkdocs build --strict` on Windows or `.venv/bin/python -m mkdocs build --strict` on Ubuntu, and fix every warning.

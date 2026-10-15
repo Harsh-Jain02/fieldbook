@@ -14,23 +14,46 @@ None of these files are part of the published site: MkDocs only builds the `docs
 
 ## Set up
 
-The project is set up on Windows, with Python 3.12. The commands in this file work in PowerShell and Git Bash, run from the repository root. They call the virtual environment's Python directly as `.venv/Scripts/python.exe`, so they work whether or not the environment is activated.
+The project is used on Windows and Ubuntu. Run the commands from the repository root. They call the virtual environment's Python directly, so they work whether or not the environment is activated.
 
-To set up the project on a new computer, clone the repository, then create the virtual environment and install the pinned packages:
+Install Git and Python 3.12 or later first. On Windows, use the installers from [git-scm.com](https://git-scm.com/) and [python.org](https://www.python.org/downloads/); when installing Python, select **Add python.exe to PATH**. On Ubuntu, install them with:
+
+```bash
+sudo apt update
+sudo apt install git python3 python3-venv
+```
+
+Then clone the repository:
+
+```bash
+git clone https://github.com/harsh-jain02/fieldbook.git
+cd fieldbook
+```
+
+Create the virtual environment and install the pinned packages with the commands for your system.
+
+**Windows (PowerShell or Git Bash):**
 
 ```bash
 python -m venv .venv
 .venv/Scripts/python.exe -m pip install -r requirements.txt
 ```
 
+**Ubuntu:**
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+```
+
 For more detail, and for fixes to common problems, see [Set up the project on another computer](docs/mkdocs/full-guide.md#set-up-the-project-on-another-computer) and [Troubleshooting](docs/mkdocs/full-guide.md#troubleshooting) in the MkDocs full guide.
 
 ## Build and preview
 
-| Task | Command |
-|---|---|
-| Build and check | `.venv/Scripts/python.exe -m mkdocs build --strict` |
-| Local preview at http://127.0.0.1:8000/fieldbook/ (keeps running until stopped) | `.venv/Scripts/python.exe -m mkdocs serve` |
+| Task | Windows | Ubuntu |
+|---|---|---|
+| Build and check | `.venv/Scripts/python.exe -m mkdocs build --strict` | `.venv/bin/python -m mkdocs build --strict` |
+| Local preview at http://127.0.0.1:8000/fieldbook/ (keeps running until stopped) | `.venv/Scripts/python.exe -m mkdocs serve` | `.venv/bin/python -m mkdocs serve` |
 
 The build writes to `site/`, which is git-ignored.
 
@@ -72,7 +95,9 @@ site/                         Build output (git-ignored, never edit)
 
 `requirements.txt` is the pinned output of `pip freeze`. The deployment workflow installs from it, so the published site is built with the same package versions as the local preview.
 
-To add or upgrade a package, install it, save the versions again and commit `requirements.txt`. In Git Bash:
+To add or upgrade a package, install it, save the versions again and commit `requirements.txt`:
+
+**Windows (Git Bash or Command Prompt):**
 
 ```bash
 .venv/Scripts/python.exe -m pip install --upgrade <package>
@@ -80,6 +105,13 @@ To add or upgrade a package, install it, save the versions again and commit `req
 ```
 
 In Windows PowerShell 5.1, save the versions with `.venv/Scripts/python.exe -m pip freeze | Out-File -Encoding utf8 requirements.txt` instead, so the file is not saved as UTF-16.
+
+**Ubuntu:**
+
+```bash
+.venv/bin/python -m pip install --upgrade <package>
+.venv/bin/python -m pip freeze > requirements.txt
+```
 
 Coding agents never install packages or edit `requirements.txt`. They ask the owner instead (see [AGENTS.md](AGENTS.md)).
 
