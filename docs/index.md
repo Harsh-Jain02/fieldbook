@@ -28,4 +28,10 @@ Things I've learned and tricks I found useful, kept so I can find them again.
 
     Tasks and fixes for Supabase projects and their databases.
 
+-   :simple-expo:{ .lg .middle } **[React Native and Expo](react-native-and-expo/index.md)**
+
+    ---
+
+    Set up, run and build React Native apps that use Expo.
+
 </div>

@@ -83,6 +83,7 @@ docs/                         Page sources (Markdown), one folder per topic; doc
 docs/mkdocs/                  Topic: building and publishing this kind of site
 docs/coding-agents/           Topic: setups and tricks for AI coding agents
 docs/supabase/                Topic: Supabase projects and their databases
+docs/react-native-and-expo/   Topic: React Native development with Expo
 docs/stylesheets/extra.css    Custom CSS: makes whole cards clickable
 requirements.txt              Pinned Python dependencies (pip freeze output)
 .github/workflows/deploy.yml  Builds the site and deploys it to GitHub Pages on push to main

@@ -23,6 +23,9 @@ nav:
   - Supabase:
       - supabase/index.md
       - Move a project to another region: supabase/move-project-to-another-region.md
+  - React Native and Expo:
+      - react-native-and-expo/index.md
+      - Expo Android commands: react-native-and-expo/expo-android-commands.md
 
   # - Getting Started:
   #     - Installation: installation.md
