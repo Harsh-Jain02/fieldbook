@@ -21,6 +21,7 @@ nav:
       - Codex Slack notifications: coding-agents/codex-slack-notifications.md
   - Supabase:
       - supabase/index.md
+      - Back up and restore a database: supabase/back-up-and-restore-database.md
       - Move a project to another region: supabase/move-project-to-another-region.md
   - React Native and Expo:
       - react-native-and-expo/index.md
