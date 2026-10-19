@@ -15,6 +15,8 @@ Codex can run a command, called a hook, when certain events happen. This page re
 
 Both events also show a desktop notification: a Windows notification on Windows or WSL, and an Ubuntu notification through `notify-send` on Ubuntu. Long reasons and messages are cut to 1,000 characters.
 
+The two events are easy to tell apart. The permission request has a warning icon on the desktop and `:warning:` in Slack; the finished task has a check mark icon on the desktop (an information icon on Windows) and `:white_check_mark:` in Slack. On Ubuntu, the permission request is sent as a critical notification, so it stays on screen until you dismiss it, and both notifications are grouped under **Codex**.
+
 The notifier reads the Slack webhook URL from `CODEX_SLACK_WEBHOOK`. Windows stores it as a user environment variable; Ubuntu keeps it in a private configuration file that the notifier reads. If the URL is missing or Slack cannot be reached, the notifier skips the message without an error, so a failed notification never interrupts Codex.
 
 ## Step 1: Create a Slack incoming webhook
@@ -89,7 +91,8 @@ Create the folder `C:\Users\YOUR_USERNAME\.codex\hooks\` and save this script in
     function Show-DesktopNotification {
         param(
             [string]$Title,
-            [string]$Message
+            [string]$Message,
+            [string]$Icon = "Info"  # "Info" or "Warning"
         )
 
         try {
@@ -97,7 +100,16 @@ Create the folder `C:\Users\YOUR_USERNAME\.codex\hooks\` and save this script in
             Add-Type -AssemblyName System.Drawing
 
             $notification = New-Object System.Windows.Forms.NotifyIcon
-            $notification.Icon = [System.Drawing.SystemIcons]::Information
+
+            if ($Icon -eq "Warning") {
+                $notification.Icon = [System.Drawing.SystemIcons]::Warning
+                $notification.BalloonTipIcon = [System.Windows.Forms.ToolTipIcon]::Warning
+            }
+            else {
+                $notification.Icon = [System.Drawing.SystemIcons]::Information
+                $notification.BalloonTipIcon = [System.Windows.Forms.ToolTipIcon]::Info
+            }
+
             $notification.BalloonTipTitle = $Title
             $notification.BalloonTipText = $Message
             $notification.Visible = $true
@@ -210,7 +222,7 @@ Create the folder `C:\Users\YOUR_USERNAME\.codex\hooks\` and save this script in
             }
 
             $message = @"
-    CODEX NEEDS ATTENTION
+    :warning: CODEX NEEDS ATTENTION
 
     Project:
     $cwd
@@ -224,7 +236,8 @@ Create the folder `C:\Users\YOUR_USERNAME\.codex\hooks\` and save this script in
 
             Show-DesktopNotification `
                 -Title "Codex Needs Attention" `
-                -Message "Codex is waiting for your approval in $cwd"
+                -Message "Codex is waiting for your approval in $cwd" `
+                -Icon "Warning"
         }
 
 
@@ -241,7 +254,7 @@ Create the folder `C:\Users\YOUR_USERNAME\.codex\hooks\` and save this script in
             }
 
             $message = @"
-    CODEX FINISHED
+    :white_check_mark: CODEX FINISHED
 
     Project:
     $cwd
@@ -252,7 +265,8 @@ Create the folder `C:\Users\YOUR_USERNAME\.codex\hooks\` and save this script in
 
             Show-DesktopNotification `
                 -Title "Codex Finished" `
-                -Message "Codex has finished working on $cwd"
+                -Message "Codex has finished working on $cwd" `
+                -Icon "Info"
         }
 
 
@@ -321,10 +335,19 @@ nano ~/.codex/hooks/slack_notifier.py
         return ""
 
 
-    def show_desktop_notification(title, message):
+    def show_desktop_notification(title, message, icon, urgency="normal"):
+        # GNOME keeps critical notifications on screen and ignores their expire time.
         try:
             subprocess.run(
-                ["notify-send", "--expire-time=5000", title, message],
+                [
+                    "notify-send",
+                    "--app-name=Codex",
+                    f"--icon={icon}",
+                    f"--urgency={urgency}",
+                    "--expire-time=5000",
+                    title,
+                    message,
+                ],
                 check=False,
                 stdin=subprocess.DEVNULL,
                 stdout=subprocess.DEVNULL,
@@ -370,7 +393,7 @@ nano ~/.codex/hooks/slack_notifier.py
         description = tool_input.get("description") if isinstance(tool_input, dict) else None
         description = truncate(description) or "Codex is waiting for your approval."
 
-        message = f"""CODEX NEEDS ATTENTION
+        message = f""":warning: CODEX NEEDS ATTENTION
 
     Project:
     {cwd}
@@ -384,13 +407,15 @@ nano ~/.codex/hooks/slack_notifier.py
         show_desktop_notification(
             "Codex Needs Attention",
             f"Codex is waiting for your approval in {cwd}",
+            icon="dialog-warning",
+            urgency="critical",
         )
         send_slack_notification(message)
 
     elif event_name == "Stop":
         last_message = truncate(event.get("last_assistant_message")) or "Codex completed the task."
 
-        message = f"""CODEX FINISHED
+        message = f""":white_check_mark: CODEX FINISHED
 
     Project:
     {cwd}
@@ -401,6 +426,7 @@ nano ~/.codex/hooks/slack_notifier.py
         show_desktop_notification(
             "Codex Finished",
             f"Codex has finished working on {cwd}",
+            icon="emblem-default",
         )
         send_slack_notification(message)
 
