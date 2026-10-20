@@ -19,6 +19,7 @@ nav:
   - Coding agents:
       - coding-agents/index.md
       - Codex Slack notifications: coding-agents/codex-slack-notifications.md
+      - Claude Code Slack notifications: coding-agents/claude-code-slack-notifications.md
   - Supabase:
       - supabase/index.md
       - Back up and restore a database: supabase/back-up-and-restore-database.md
